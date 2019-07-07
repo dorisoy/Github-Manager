@@ -1,0 +1,14 @@
+C:\Users\Asus\Documents\git\github-management\bin\Debug\github-management.exe.config
+C:\Users\Asus\Documents\git\github-management\bin\Debug\github-management.exe
+C:\Users\Asus\Documents\git\github-management\bin\Debug\github-management.pdb
+C:\Users\Asus\Documents\git\github-management\obj\Debug\github-management.csprojAssemblyReference.cache
+C:\Users\Asus\Documents\git\github-management\obj\Debug\github_management.LogIn.resources
+C:\Users\Asus\Documents\git\github-management\obj\Debug\github_management.Main.resources
+C:\Users\Asus\Documents\git\github-management\obj\Debug\github_management.Properties.Resources.resources
+C:\Users\Asus\Documents\git\github-management\obj\Debug\github-management.csproj.GenerateResource.cache
+C:\Users\Asus\Documents\git\github-management\obj\Debug\github-management.csproj.CoreCompileInputs.cache
+C:\Users\Asus\Documents\git\github-management\obj\Debug\github-management.exe
+C:\Users\Asus\Documents\git\github-management\obj\Debug\github-management.pdb
+C:\Users\Asus\Documents\git\github-management\bin\Debug\Octokit.dll
+C:\Users\Asus\Documents\git\github-management\bin\Debug\Octokit.xml
+C:\Users\Asus\Documents\git\github-management\obj\Debug\github-management.csproj.CopyComplete
