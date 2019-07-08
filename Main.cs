@@ -19,10 +19,21 @@ namespace github_management
         List<Repository> repositories;
         delegate void SetWelcomeLabelCallback();
         delegate void PopulatePanelCallback();
+        delegate void SetUpMenuCallback();
+
+        bool show_login_on_show = false;
 
         public Main()
         {
             InitializeComponent();
+        }
+
+        private void Main_Shown(object sender, EventArgs e)
+        {
+            if (show_login_on_show)
+            {
+                LogIn(null, null);
+            }
         }
 
         private void Main_Load(object sender, EventArgs e)
@@ -39,13 +50,13 @@ namespace github_management
 
             if (!set_up)
             {
-                LogIn(null, null);
+                show_login_on_show = true;
             }
             else
             {
                 if(key.GetValue("username") == null || key.GetValue("password") == null)
                 {
-                    LogIn(null, null);
+                    show_login_on_show = true;
                 }
                 else
                 {
@@ -71,8 +82,16 @@ namespace github_management
 
         private void Authenticated(Task obj)
         {
-            WriteWelcomeLabelSafe();
-            SetUserReposAsync();
+            if(user != null)
+            {
+                WriteWelcomeLabelSafe();
+                SetUserReposAsync();
+            }
+            else
+            {
+                LogOut(null, null);
+                MessageBox.Show("Authentication failed. Please try to log in again.");
+            }
         }
 
         private void WriteWelcomeLabelSafe()
@@ -126,6 +145,9 @@ namespace github_management
                     // this way we can pass extra arguments to event function
                     lb.Click += (sender, e) => Repo_Label_Click(sender, e, this_repo);
 
+                    lb.MouseEnter += new EventHandler(Repo_Label_Mouse_Enter);
+                    lb.MouseLeave += new EventHandler(Repo_Label_Mouse_Leave);
+
                     // add to panel
                     repos_panel.Controls.Add(lb);
                 }
@@ -135,6 +157,22 @@ namespace github_management
                 // and this is when it will show again
                 window_panel.Show();
             }
+        }
+
+        protected void Repo_Label_Mouse_Enter(object sender, EventArgs e)
+        {
+            System.Windows.Forms.Label lb = sender as System.Windows.Forms.Label;
+            this.Cursor = Cursors.Hand;
+
+            lb.ForeColor = Color.DarkGreen;
+        }
+
+        protected void Repo_Label_Mouse_Leave(object sender, EventArgs e)
+        {
+            System.Windows.Forms.Label lb = sender as System.Windows.Forms.Label;
+            this.Cursor = Cursors.Default;
+
+            lb.ForeColor = Color.Black;
         }
 
         protected void Repo_Label_Click(object sender, EventArgs e, Repository repo)
@@ -169,24 +207,36 @@ namespace github_management
             user = null;
             client = null;
 
-            menu_strip.Items.Clear();
-
-            window_panel.Hide();
-
-            ToolStripItem log_in_item = new ToolStripMenuItem();
-            log_in_item.Text = "Log In";
-            log_in_item.Click += new EventHandler(LogIn);
-            menu_strip.Items.Add(log_in_item);
+            SetUpMenu();
 
             key.Close();
+        }
+
+        private void SetUpMenu()
+        {
+            if (window_panel.InvokeRequired)
+            {
+                var d = new SetUpMenuCallback(SetUpMenu);
+                Invoke(d);
+            }
+            else
+            {
+                menu_strip.Items.Clear();
+
+                window_panel.Hide();
+
+                ToolStripItem log_in_item = new ToolStripMenuItem();
+                log_in_item.Text = "Log In";
+                log_in_item.Click += new EventHandler(LogIn);
+                menu_strip.Items.Add(log_in_item);
+            }
         }
 
         private void LogIn(object sender, EventArgs e)
         {
             LogIn form = new LogIn(this);
-            form.Show();
             this.Hide();
+            form.Show();
         }
-        
     }
 }

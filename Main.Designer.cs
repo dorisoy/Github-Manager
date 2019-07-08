@@ -130,6 +130,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Manage repository updates";
             this.Load += new System.EventHandler(this.Main_Load);
+            this.Shown += new System.EventHandler(this.Main_Shown);
             this.window_panel.ResumeLayout(false);
             this.window_panel.PerformLayout();
             this.ResumeLayout(false);
