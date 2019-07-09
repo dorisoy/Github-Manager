@@ -32,11 +32,25 @@
             this.empty_lb = new System.Windows.Forms.Label();
             this.repos_panel = new System.Windows.Forms.FlowLayoutPanel();
             this.repo_count_lb = new System.Windows.Forms.Label();
-            this.repo_name = new System.Windows.Forms.Label();
             this.repo_desc = new System.Windows.Forms.Label();
             this.menu_strip = new System.Windows.Forms.MenuStrip();
+            this.changeBashPathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.changeWorkingDirectoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.window_panel = new System.Windows.Forms.Panel();
+            this.open_terminal = new System.Windows.Forms.Button();
+            this.copy_clone_url = new System.Windows.Forms.Button();
+            this.repo_name = new System.Windows.Forms.LinkLabel();
+            this.changeBashPathDialog = new System.Windows.Forms.OpenFileDialog();
+            this.changeWorkingDirectoryDialog = new System.Windows.Forms.FolderBrowserDialog();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.general_progress_bar = new System.Windows.Forms.ToolStripProgressBar();
+            this.clone_url_tb = new System.Windows.Forms.TextBox();
+            this.showInfoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.search_tb = new System.Windows.Forms.TextBox();
+            this.menu_strip.SuspendLayout();
             this.window_panel.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // welcome_lb
@@ -64,9 +78,9 @@
             this.repos_panel.AutoScroll = true;
             this.repos_panel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.repos_panel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.repos_panel.Location = new System.Drawing.Point(18, 29);
+            this.repos_panel.Location = new System.Drawing.Point(18, 56);
             this.repos_panel.Name = "repos_panel";
-            this.repos_panel.Size = new System.Drawing.Size(200, 398);
+            this.repos_panel.Size = new System.Drawing.Size(200, 371);
             this.repos_panel.TabIndex = 4;
             this.repos_panel.WrapContents = false;
             // 
@@ -79,36 +93,50 @@
             this.repo_count_lb.TabIndex = 0;
             this.repo_count_lb.Text = "label1";
             // 
-            // repo_name
-            // 
-            this.repo_name.AutoSize = true;
-            this.repo_name.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.repo_name.Location = new System.Drawing.Point(259, 29);
-            this.repo_name.Name = "repo_name";
-            this.repo_name.Size = new System.Drawing.Size(0, 20);
-            this.repo_name.TabIndex = 0;
-            // 
             // repo_desc
             // 
             this.repo_desc.AutoSize = true;
-            this.repo_desc.Location = new System.Drawing.Point(260, 49);
+            this.repo_desc.Location = new System.Drawing.Point(257, 56);
             this.repo_desc.Name = "repo_desc";
-            this.repo_desc.Size = new System.Drawing.Size(0, 13);
+            this.repo_desc.Size = new System.Drawing.Size(111, 13);
             this.repo_desc.TabIndex = 5;
+            this.repo_desc.Text = "Repository description";
             // 
             // menu_strip
             // 
+            this.menu_strip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.changeBashPathToolStripMenuItem,
+            this.changeWorkingDirectoryToolStripMenuItem,
+            this.showInfoToolStripMenuItem});
             this.menu_strip.Location = new System.Drawing.Point(0, 0);
             this.menu_strip.Name = "menu_strip";
             this.menu_strip.Size = new System.Drawing.Size(800, 24);
             this.menu_strip.TabIndex = 6;
             this.menu_strip.Text = "menuStrip1";
             // 
+            // changeBashPathToolStripMenuItem
+            // 
+            this.changeBashPathToolStripMenuItem.Name = "changeBashPathToolStripMenuItem";
+            this.changeBashPathToolStripMenuItem.Size = new System.Drawing.Size(115, 20);
+            this.changeBashPathToolStripMenuItem.Text = "Change bash path";
+            this.changeBashPathToolStripMenuItem.Click += new System.EventHandler(this.ChangeBashPathToolStripMenuItem_Click);
+            // 
+            // changeWorkingDirectoryToolStripMenuItem
+            // 
+            this.changeWorkingDirectoryToolStripMenuItem.Name = "changeWorkingDirectoryToolStripMenuItem";
+            this.changeWorkingDirectoryToolStripMenuItem.Size = new System.Drawing.Size(156, 20);
+            this.changeWorkingDirectoryToolStripMenuItem.Text = "Change working directory";
+            this.changeWorkingDirectoryToolStripMenuItem.Click += new System.EventHandler(this.ChangeWorkingDirectoryToolStripMenuItem_Click);
+            // 
             // window_panel
             // 
+            this.window_panel.Controls.Add(this.search_tb);
+            this.window_panel.Controls.Add(this.clone_url_tb);
+            this.window_panel.Controls.Add(this.open_terminal);
+            this.window_panel.Controls.Add(this.copy_clone_url);
+            this.window_panel.Controls.Add(this.repo_name);
             this.window_panel.Controls.Add(this.repo_desc);
             this.window_panel.Controls.Add(this.repos_panel);
-            this.window_panel.Controls.Add(this.repo_name);
             this.window_panel.Controls.Add(this.repo_count_lb);
             this.window_panel.Controls.Add(this.empty_lb);
             this.window_panel.Controls.Add(this.welcome_lb);
@@ -117,12 +145,98 @@
             this.window_panel.Size = new System.Drawing.Size(776, 454);
             this.window_panel.TabIndex = 7;
             // 
+            // open_terminal
+            // 
+            this.open_terminal.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.open_terminal.Location = new System.Drawing.Point(679, 32);
+            this.open_terminal.Name = "open_terminal";
+            this.open_terminal.Size = new System.Drawing.Size(94, 23);
+            this.open_terminal.TabIndex = 9;
+            this.open_terminal.Text = "Open terminal";
+            this.open_terminal.UseVisualStyleBackColor = true;
+            this.open_terminal.Click += new System.EventHandler(this.Open_terminal_Click);
+            // 
+            // copy_clone_url
+            // 
+            this.copy_clone_url.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.copy_clone_url.Location = new System.Drawing.Point(679, 3);
+            this.copy_clone_url.Name = "copy_clone_url";
+            this.copy_clone_url.Size = new System.Drawing.Size(94, 23);
+            this.copy_clone_url.TabIndex = 8;
+            this.copy_clone_url.Text = "Get clone URL";
+            this.copy_clone_url.UseVisualStyleBackColor = true;
+            this.copy_clone_url.Click += new System.EventHandler(this.Copy_Clone_Url_Click);
+            // 
+            // repo_name
+            // 
+            this.repo_name.AutoSize = true;
+            this.repo_name.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.repo_name.Location = new System.Drawing.Point(257, 29);
+            this.repo_name.Name = "repo_name";
+            this.repo_name.Size = new System.Drawing.Size(121, 18);
+            this.repo_name.TabIndex = 7;
+            this.repo_name.TabStop = true;
+            this.repo_name.Text = "Repository name";
+            this.repo_name.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Repo_name_LinkClicked);
+            // 
+            // changeBashPathDialog
+            // 
+            this.changeBashPathDialog.FileName = "openFileDialog1";
+            this.changeBashPathDialog.Filter = "Git Bash Exe|bash.exe";
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabel1,
+            this.general_progress_bar});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 488);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(800, 22);
+            this.statusStrip1.TabIndex = 8;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.BackColor = System.Drawing.Color.Transparent;
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(317, 17);
+            this.toolStripStatusLabel1.Text = "This project utilizes GitHub API along with Octokit package";
+            // 
+            // general_progress_bar
+            // 
+            this.general_progress_bar.Name = "general_progress_bar";
+            this.general_progress_bar.Size = new System.Drawing.Size(100, 16);
+            // 
+            // clone_url_tb
+            // 
+            this.clone_url_tb.Location = new System.Drawing.Point(260, 72);
+            this.clone_url_tb.Name = "clone_url_tb";
+            this.clone_url_tb.Size = new System.Drawing.Size(100, 20);
+            this.clone_url_tb.TabIndex = 10;
+            this.clone_url_tb.Visible = false;
+            // 
+            // showInfoToolStripMenuItem
+            // 
+            this.showInfoToolStripMenuItem.Name = "showInfoToolStripMenuItem";
+            this.showInfoToolStripMenuItem.Size = new System.Drawing.Size(72, 20);
+            this.showInfoToolStripMenuItem.Text = "Show Info";
+            this.showInfoToolStripMenuItem.Click += new System.EventHandler(this.ShowInfoToolStripMenuItem_Click);
+            // 
+            // search_tb
+            // 
+            this.search_tb.Location = new System.Drawing.Point(18, 30);
+            this.search_tb.Name = "search_tb";
+            this.search_tb.Size = new System.Drawing.Size(200, 20);
+            this.search_tb.TabIndex = 11;
+            this.search_tb.TextChanged += new System.EventHandler(this.Search_tb_TextChanged);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(800, 495);
+            this.ClientSize = new System.Drawing.Size(800, 510);
+            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menu_strip);
             this.Controls.Add(this.window_panel);
             this.MainMenuStrip = this.menu_strip;
@@ -131,8 +245,12 @@
             this.Text = "Manage repository updates";
             this.Load += new System.EventHandler(this.Main_Load);
             this.Shown += new System.EventHandler(this.Main_Shown);
+            this.menu_strip.ResumeLayout(false);
+            this.menu_strip.PerformLayout();
             this.window_panel.ResumeLayout(false);
             this.window_panel.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -144,10 +262,22 @@
         private System.Windows.Forms.Label empty_lb;
         private System.Windows.Forms.FlowLayoutPanel repos_panel;
         private System.Windows.Forms.Label repo_count_lb;
-        private System.Windows.Forms.Label repo_name;
         private System.Windows.Forms.Label repo_desc;
         private System.Windows.Forms.MenuStrip menu_strip;
         private System.Windows.Forms.Panel window_panel;
+        private System.Windows.Forms.LinkLabel repo_name;
+        private System.Windows.Forms.Button copy_clone_url;
+        private System.Windows.Forms.Button open_terminal;
+        private System.Windows.Forms.ToolStripMenuItem changeBashPathToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem changeWorkingDirectoryToolStripMenuItem;
+        private System.Windows.Forms.OpenFileDialog changeBashPathDialog;
+        private System.Windows.Forms.FolderBrowserDialog changeWorkingDirectoryDialog;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.ToolStripProgressBar general_progress_bar;
+        private System.Windows.Forms.TextBox clone_url_tb;
+        private System.Windows.Forms.ToolStripMenuItem showInfoToolStripMenuItem;
+        private System.Windows.Forms.TextBox search_tb;
     }
 }
 
