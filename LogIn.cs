@@ -99,5 +99,10 @@ namespace github_management
                 invoker.Close();
             }
         }
+
+        private void LogIn_Load(object sender, EventArgs e)
+        {
+            this.Icon = new Icon(@"GitHub-Mark/github_mark_120px_plus_Bzz_icon.ico");
+        }
     }
 }

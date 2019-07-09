@@ -12,3 +12,4 @@ C:\Users\Asus\Documents\git\github-management\obj\Debug\github-management.pdb
 C:\Users\Asus\Documents\git\github-management\bin\Debug\Octokit.dll
 C:\Users\Asus\Documents\git\github-management\bin\Debug\Octokit.xml
 C:\Users\Asus\Documents\git\github-management\obj\Debug\github-management.csproj.CopyComplete
+C:\Users\Asus\Documents\git\github-management\obj\Debug\github_management.CommitInfoForm.resources

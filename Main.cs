@@ -24,18 +24,16 @@ namespace github_management
         User user;
 
         // list of users repositories
-        List<Repository> repositories;
+        public List<Repository> repositories;
 
         // used to reference on currently opened repository
-        Repository current_repo;
-
-        // used when invoke is required for Form controles
-        delegate void SetWelcomeLabelCallback();
-        delegate void PopulatePanelCallback();
-        delegate void SetUpMenuCallback();
+        public Repository current_repo;
 
         // this is set on load and indicates if to show log in on Form_Shown
-        bool show_login_on_show = false;
+        public bool show_login_on_show = false;
+
+        // indicates if repo is loading currently
+        public bool repo_loading = false;
 
         public Main()
         {
@@ -56,7 +54,9 @@ namespace github_management
             LoadClient();
         }
 
-        public void LoadClient()
+        // load client based on username and password from registry
+        // if nothing is set in registry, log in
+        public async void LoadClient()
         {
             //Registry.CurrentUser.DeleteSubKey(@"SOFTWARE\GithubManager");
             RegistryKey key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\GithubManager", true);
@@ -77,11 +77,13 @@ namespace github_management
                 {
                     if (key.GetValue("bash_path") == null || key.GetValue("wroking_directory") == null)
                     {
-                        key.SetValue("bash_path", "D:/Instalirani       Programi/Git/bin/bash.exe");
+                        key.SetValue("bash_path", "D:/Instalirani Programi/Git/bin/bash.exe");
 
-                        key.SetValue("wroking_directory", "C:/wamp64/   www");
+                        key.SetValue("wroking_directory", "C:/wamp64/www");
                     }
-                    
+
+
+                    empty_lb.Hide();
 
                     client = new GitHubClient(new ProductHeaderValue("personal-gh-management-app"));
                     var basicAuth = new Credentials(key.GetValue("username").ToString(), key.GetValue("password").ToString());
@@ -102,71 +104,42 @@ namespace github_management
                     log_out_item.Click += new EventHandler(LogOut);
                     menu_strip.Items.Add(log_out_item);
 
-                    var task = SetUserAsync();
+                    // set user
+                    user = await GetUserAsync();
+
                     general_progress_bar.Value = 10;
                     general_progress_bar.Visible = true;
-                    task.ContinueWith(Authenticated);
+
+                    // if user is authed successfully
+                    if(user != null)
+                    {
+                        // welcome user
+                        general_progress_bar.Value = 20;
+                        welcome_lb.Text = "Welcome, " + user.Name.Substring(0, user.Name.IndexOf(' '));
+
+                        // set users repos
+                        repositories = await GetUserReposAsync();
+                        PopulateReposPanel(repositories);
+
+                        empty_lb.Text = "Select repository from the list";
+                        empty_lb.Location = new Point((this.Width - main_view.Width / 2) - empty_lb.Width / 2, (main_view.Height / 2) - empty_lb.Height / 2);
+                        empty_lb.Show();
+                    }
+                    else
+                    {
+                        // log out
+                        LogOut(null, null);
+                        MessageBox.Show("Authentication failed. Please try to log in again.");
+                    }
+                    
                 }
             }
 
             key.Close();
         }
 
-
-        private void Authenticated(Task obj)
-        {
-            if(user != null)
-            {
-                WriteWelcomeLabelSafe();
-                SetUserReposAsync();
-            }
-            else
-            {
-                LogOut(null, null);
-                MessageBox.Show("Authentication failed. Please try to log in again.");
-            }
-        }
-
-        private void WriteWelcomeLabelSafe()
-        {
-            if (welcome_lb.InvokeRequired)
-            {
-                var d = new SetWelcomeLabelCallback(WriteWelcomeLabelSafe);
-                Invoke(d);
-            }
-            else
-            {
-                general_progress_bar.Value = 20;
-                welcome_lb.Text = "Welcome, " + user.Name.Substring(0, user.Name.IndexOf(' '));
-            }
-        }
-
-        private async Task SetUserAsync()
-        {
-            user = await client.User.Current();
-        }
-
-        private async Task SetUserReposAsync()
-        {
-            var repos = await client.Repository.GetAllForCurrent();
-            repositories = repos.ToList();
-            PopulatePanelSafe();
-        }
-
-        private void PopulatePanelSafe()
-        {
-            if (repos_panel.InvokeRequired)
-            {
-                var d = new PopulatePanelCallback(PopulatePanelSafe);
-                Invoke(d);
-            }
-            else
-            {
-                PopulatePanel(repositories);
-            }
-        }
-
-        private void PopulatePanel(List<Repository> repos_list)
+        // function to populate panel, receives a list of repos to populate panel with
+        private void PopulateReposPanel(List<Repository> repos_list)
         {
             repos_panel.Controls.Clear();
 
@@ -180,22 +153,20 @@ namespace github_management
                 // this repo
                 Repository this_repo = repos_list[i];
 
-                // create new label instance
-                System.Windows.Forms.Label lb = new System.Windows.Forms.Label();
-                lb.Text = repos_list[i].FullName;
-                lb.Width = repos_panel.Width;
+                RepositoryControl control = new RepositoryControl(this_repo);
+                control.SetEvents(this);
 
-                // create event
-                // let it lead to lambda function that has only sender and e
-                // that lambda function will call our callback function
-                // this way we can pass extra arguments to event function
-                lb.Click += (sender, e) => Repo_Label_Click(sender, e, this_repo);
+                //// create event
+                //// let it lead to lambda function that has only sender and e
+                //// that lambda function will call our callback function
+                //// this way we can pass extra arguments to event function
+                //control.Label.Click += (sender, e) => Repo_Label_Click(sender, e, this_repo);
 
-                lb.MouseEnter += new EventHandler(Repo_Label_Mouse_Enter);
-                lb.MouseLeave += new EventHandler(Repo_Label_Mouse_Leave);
+                //control.Label.MouseEnter += new EventHandler(Repo_Label_Mouse_Enter);
+                //control.Label.MouseLeave += new EventHandler(Repo_Label_Mouse_Leave);
 
                 // add to panel
-                repos_panel.Controls.Add(lb);
+                repos_panel.Controls.Add(control.Wrapper);
 
                 general_progress_bar.Value += (int)increase;
             }
@@ -209,51 +180,65 @@ namespace github_management
             window_panel.Show();
         }
 
-        protected void Repo_Label_Mouse_Enter(object sender, EventArgs e)
+        // populates commits panel
+        public void PopulateCommitsPanel(List<GitHubCommit> commits)
         {
-            System.Windows.Forms.Label lb = sender as System.Windows.Forms.Label;
-            this.Cursor = Cursors.Hand;
-            lb.ForeColor = Color.DarkGreen;
-        }
-
-        protected void Repo_Label_Mouse_Leave(object sender, EventArgs e)
-        {
-            System.Windows.Forms.Label lb = sender as System.Windows.Forms.Label;
-            this.Cursor = Cursors.Default;
-            lb.ForeColor = Color.Black;
-        }
-
-        protected void Repo_Label_Click(object sender, EventArgs e, Repository repo)
-        {
-            //attempt to cast the sender as a label
-            System.Windows.Forms.Label lbl = sender as System.Windows.Forms.Label;
-                    
-            //if the cast was successful (i.e. not null)
-            if (lbl != null)
+            commits_panel.Controls.Clear();
+            foreach (GitHubCommit commit in commits)
             {
-                current_repo = repo;
+                // commit name
+                CommitControl control = new CommitControl(commit);
+                control.SetEvents(this);
 
-                empty_lb.Hide();
-
-                // set repo name
-                repo_name.Text = repo.FullName;
-
-                // set hidden textbox tetx to clone url
-                clone_url_tb.Text = repo.CloneUrl;
-
-                // set repo description
-                if (repo.Description != null)
-                {
-                    repo_desc.Text = repo.Description;
-                }
-                else
-                {
-                    repo_desc.Text = "No description";
-                }
+                commits_panel.Controls.Add(control.Wrapper);
             }
         }
-                
 
+
+        #region ASYNC_METHODS
+
+        // set global user that is authed
+        private async Task<User> GetUserAsync()
+        {
+            return await client.User.Current();
+        }
+
+        // set all users repos list and populate panel safely
+        private async Task<List<Repository>> GetUserReposAsync()
+        {
+            var repos = await client.Repository.GetAllForCurrent();
+            return repos.ToList();
+        }
+
+        // get all commits
+        public async Task<List<GitHubCommit>> getAllCommits()
+        {
+            var commits = await client.Repository.Commit.GetAll(current_repo.Id);
+
+            List<GitHubCommit> commitList = new List<GitHubCommit>();
+
+            foreach (GitHubCommit commit in commits)
+            {
+                var commitDetails = await client.Repository.Commit.Get(current_repo.Id, commit.Sha);
+                commitList.Add(commitDetails);
+            }
+
+            return commitList;
+        }
+
+        #endregion
+
+        #region LOG_IN_LOG_OUT
+
+        // log in, open form
+        private void LogIn(object sender, EventArgs e)
+        {
+            LogIn form = new LogIn(this);
+            this.Hide();
+            form.Show();
+        }
+
+        // log out, remove everything from registry and remove log out button
         private void LogOut(object sender, EventArgs e)
         {
             RegistryKey key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\GithubManager", true);
@@ -262,53 +247,45 @@ namespace github_management
             key.DeleteValue("password");
             user = null;
             client = null;
+            repositories.Clear();
+            current_repo = null;
 
-            SetUpMenu();
+            empty_lb.Show();
+            empty_lb.Text = "You are not logged in";
+            empty_lb.Location = new Point(this.Width / 2 - empty_lb.Width/2, this.Height / 2 - empty_lb.Height / 2);
+
+            // remove log out item
+            for (int i = 0; i < menu_strip.Items.Count; i++)
+            {
+                if (menu_strip.Items[i].Text == "Log Out")
+                {
+                    menu_strip.Items.RemoveAt(i);
+                    break;
+                }
+            }
+
+            window_panel.Hide();
+
+            // add log in item
+            ToolStripItem log_in_item = new ToolStripMenuItem();
+            log_in_item.Text = "Log In";
+            log_in_item.Click += new EventHandler(LogIn);
+            menu_strip.Items.Add(log_in_item);
 
             key.Close();
         }
 
-        private void SetUpMenu()
-        {
-            if (window_panel.InvokeRequired)
-            {
-                var d = new SetUpMenuCallback(SetUpMenu);
-                Invoke(d);
-            }
-            else
-            {
-                // remove log out item
-                for (int i = 0; i < menu_strip.Items.Count; i++)
-                {
-                    if (menu_strip.Items[i].Text == "Log Out")
-                    {
-                        menu_strip.Items.RemoveAt(i);
-                        break;
-                    }
-                }
+        #endregion
 
-                window_panel.Hide();
+        #region MAIN_VIEW_EVENTS
 
-                // add log in item
-                ToolStripItem log_in_item = new ToolStripMenuItem();
-                log_in_item.Text = "Log In";
-                log_in_item.Click += new EventHandler(LogIn);
-                menu_strip.Items.Add(log_in_item);
-            }
-        }
-
-        private void LogIn(object sender, EventArgs e)
-        {
-            LogIn form = new LogIn(this);
-            this.Hide();
-            form.Show();
-        }
-
+        // get link from hidden tb and open in default browser
         private void Repo_name_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             System.Diagnostics.Process.Start(clone_url_tb.Text);
         }
 
+        // open terminal in workin directory/repo name or just in working directory
         private void Open_terminal_Click(object sender, EventArgs e)
         {
             if(current_repo != null)
@@ -341,6 +318,7 @@ namespace github_management
             }
         }
 
+        // copy clone url from hidden tb
         private void Copy_Clone_Url_Click(object sender, EventArgs e)
         {
             if(current_repo != null)
@@ -351,6 +329,11 @@ namespace github_management
             }
         }
 
+        #endregion
+
+        #region MENU_EVENTS
+
+        // change bash.exe path
         private void ChangeBashPathToolStripMenuItem_Click(object sender, EventArgs e)
         {
             changeBashPathDialog.ShowDialog();
@@ -365,6 +348,7 @@ namespace github_management
             }
         }
 
+        // change w dir path
         private void ChangeWorkingDirectoryToolStripMenuItem_Click(object sender, EventArgs e)
         {
             changeWorkingDirectoryDialog.ShowDialog();
@@ -379,6 +363,7 @@ namespace github_management
             }
         }
 
+        // show info about vars
         private void ShowInfoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             RegistryKey key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\GithubManager", true);
@@ -392,12 +377,15 @@ namespace github_management
             key.Close();
         }
 
+        #endregion
+
+        // search on input
         private void Search_tb_TextChanged(object sender, EventArgs e)
         {
             TextBox search_tb = sender as TextBox;
             if(search_tb.Text.Trim() == "")
             {
-                PopulatePanel(repositories);
+                PopulateReposPanel(repositories);
             }
             else
             {
@@ -410,7 +398,7 @@ namespace github_management
                     }
                 }
 
-                PopulatePanel(results);
+                PopulateReposPanel(results);
             }
         }
     }
