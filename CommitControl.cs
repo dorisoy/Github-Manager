@@ -27,7 +27,14 @@ namespace github_management
             // create new label instance
             HeaderLabel = new System.Windows.Forms.Label();
             HeaderLabel.AutoSize = true;
-            HeaderLabel.Text = commit.Commit.Message.Replace('\n'.ToString(), "");
+            if (commit.Commit.Message.IndexOf('\n') > -1)
+            {
+                HeaderLabel.Text = commit.Commit.Message.Substring(0, commit.Commit.Message.IndexOf('\n'));
+            }
+            else
+            {
+                HeaderLabel.Text = commit.Commit.Message;
+            }
             HeaderLabel.Font = new Font(new FontFamily(System.Drawing.Text.GenericFontFamilies.Serif), 12, FontStyle.Bold);
             Wrapper.Controls.Add(HeaderLabel);
 
