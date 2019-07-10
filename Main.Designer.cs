@@ -34,9 +34,6 @@
             this.repo_count_lb = new System.Windows.Forms.Label();
             this.repo_desc = new System.Windows.Forms.Label();
             this.menu_strip = new System.Windows.Forms.MenuStrip();
-            this.changeBashPathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.changeWorkingDirectoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.showInfoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.window_panel = new System.Windows.Forms.Panel();
             this.search_tb = new System.Windows.Forms.TextBox();
             this.main_view = new System.Windows.Forms.Panel();
@@ -52,6 +49,10 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.general_progress_bar = new System.Windows.Forms.ToolStripProgressBar();
+            this.pathsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.changeBashPathToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.changeWorkingDirToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showInfoToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.menu_strip.SuspendLayout();
             this.window_panel.SuspendLayout();
             this.main_view.SuspendLayout();
@@ -111,35 +112,12 @@
             // menu_strip
             // 
             this.menu_strip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.changeBashPathToolStripMenuItem,
-            this.changeWorkingDirectoryToolStripMenuItem,
-            this.showInfoToolStripMenuItem});
+            this.pathsToolStripMenuItem});
             this.menu_strip.Location = new System.Drawing.Point(0, 0);
             this.menu_strip.Name = "menu_strip";
             this.menu_strip.Size = new System.Drawing.Size(800, 24);
             this.menu_strip.TabIndex = 6;
             this.menu_strip.Text = "menuStrip1";
-            // 
-            // changeBashPathToolStripMenuItem
-            // 
-            this.changeBashPathToolStripMenuItem.Name = "changeBashPathToolStripMenuItem";
-            this.changeBashPathToolStripMenuItem.Size = new System.Drawing.Size(115, 20);
-            this.changeBashPathToolStripMenuItem.Text = "Change bash path";
-            this.changeBashPathToolStripMenuItem.Click += new System.EventHandler(this.ChangeBashPathToolStripMenuItem_Click);
-            // 
-            // changeWorkingDirectoryToolStripMenuItem
-            // 
-            this.changeWorkingDirectoryToolStripMenuItem.Name = "changeWorkingDirectoryToolStripMenuItem";
-            this.changeWorkingDirectoryToolStripMenuItem.Size = new System.Drawing.Size(156, 20);
-            this.changeWorkingDirectoryToolStripMenuItem.Text = "Change working directory";
-            this.changeWorkingDirectoryToolStripMenuItem.Click += new System.EventHandler(this.ChangeWorkingDirectoryToolStripMenuItem_Click);
-            // 
-            // showInfoToolStripMenuItem
-            // 
-            this.showInfoToolStripMenuItem.Name = "showInfoToolStripMenuItem";
-            this.showInfoToolStripMenuItem.Size = new System.Drawing.Size(72, 20);
-            this.showInfoToolStripMenuItem.Text = "Show Info";
-            this.showInfoToolStripMenuItem.Click += new System.EventHandler(this.ShowInfoToolStripMenuItem_Click);
             // 
             // window_panel
             // 
@@ -276,6 +254,37 @@
             this.general_progress_bar.Name = "general_progress_bar";
             this.general_progress_bar.Size = new System.Drawing.Size(100, 16);
             // 
+            // pathsToolStripMenuItem
+            // 
+            this.pathsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.changeBashPathToolStripMenuItem1,
+            this.changeWorkingDirToolStripMenuItem,
+            this.showInfoToolStripMenuItem1});
+            this.pathsToolStripMenuItem.Name = "pathsToolStripMenuItem";
+            this.pathsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
+            this.pathsToolStripMenuItem.Text = "Paths";
+            // 
+            // changeBashPathToolStripMenuItem1
+            // 
+            this.changeBashPathToolStripMenuItem1.Name = "changeBashPathToolStripMenuItem1";
+            this.changeBashPathToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.changeBashPathToolStripMenuItem1.Text = "Change bash path";
+            this.changeBashPathToolStripMenuItem1.Click += new System.EventHandler(this.ChangeBashPathToolStripMenuItem_Click);
+            // 
+            // changeWorkingDirToolStripMenuItem
+            // 
+            this.changeWorkingDirToolStripMenuItem.Name = "changeWorkingDirToolStripMenuItem";
+            this.changeWorkingDirToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.changeWorkingDirToolStripMenuItem.Text = "Change working dir";
+            this.changeWorkingDirToolStripMenuItem.Click += new System.EventHandler(this.ChangeWorkingDirectoryToolStripMenuItem_Click);
+            // 
+            // showInfoToolStripMenuItem1
+            // 
+            this.showInfoToolStripMenuItem1.Name = "showInfoToolStripMenuItem1";
+            this.showInfoToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.showInfoToolStripMenuItem1.Text = "Show info";
+            this.showInfoToolStripMenuItem1.Click += new System.EventHandler(this.ShowInfoToolStripMenuItem_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -314,14 +323,11 @@
         private System.Windows.Forms.Label repo_count_lb;
         private System.Windows.Forms.MenuStrip menu_strip;
         private System.Windows.Forms.Panel window_panel;
-        private System.Windows.Forms.ToolStripMenuItem changeBashPathToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem changeWorkingDirectoryToolStripMenuItem;
         private System.Windows.Forms.OpenFileDialog changeBashPathDialog;
         private System.Windows.Forms.FolderBrowserDialog changeWorkingDirectoryDialog;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripProgressBar general_progress_bar;
-        private System.Windows.Forms.ToolStripMenuItem showInfoToolStripMenuItem;
         private System.Windows.Forms.TextBox search_tb;
         private System.Windows.Forms.Label loading_lb;
         public System.Windows.Forms.Label empty_lb;
@@ -333,6 +339,10 @@
         public System.Windows.Forms.FlowLayoutPanel commits_panel;
         public System.Windows.Forms.Panel loading_panel;
         public System.Windows.Forms.Panel main_view;
+        private System.Windows.Forms.ToolStripMenuItem pathsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem changeBashPathToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem changeWorkingDirToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showInfoToolStripMenuItem1;
     }
 }
 

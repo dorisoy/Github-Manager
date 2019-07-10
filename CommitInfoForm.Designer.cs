@@ -34,6 +34,9 @@
             this.commit_desc = new System.Windows.Forms.TextBox();
             this.file_downloaded_progress = new System.Windows.Forms.ProgressBar();
             this.save_file_dialog = new System.Windows.Forms.FolderBrowserDialog();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.download_status_lb = new System.Windows.Forms.ToolStripStatusLabel();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // commit_message
@@ -86,12 +89,29 @@
             this.file_downloaded_progress.Size = new System.Drawing.Size(354, 23);
             this.file_downloaded_progress.TabIndex = 4;
             // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.download_status_lb});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 428);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(800, 22);
+            this.statusStrip1.TabIndex = 5;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // download_status_lb
+            // 
+            this.download_status_lb.BackColor = System.Drawing.Color.Transparent;
+            this.download_status_lb.Name = "download_status_lb";
+            this.download_status_lb.Size = new System.Drawing.Size(0, 17);
+            // 
             // CommitInfoForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.file_downloaded_progress);
             this.Controls.Add(this.commit_desc);
             this.Controls.Add(this.label1);
@@ -101,6 +121,8 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Commit Information";
             this.Load += new System.EventHandler(this.CommitInfoForm_Load);
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -114,5 +136,7 @@
         private System.Windows.Forms.TextBox commit_desc;
         private System.Windows.Forms.ProgressBar file_downloaded_progress;
         private System.Windows.Forms.FolderBrowserDialog save_file_dialog;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripStatusLabel download_status_lb;
     }
 }

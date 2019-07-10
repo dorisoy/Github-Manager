@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Octokit;
+using System.Threading;
 
 namespace github_management
 {
@@ -112,7 +113,17 @@ namespace github_management
         private void wc_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
         {
             file_downloaded_progress.Value = 0;
-            MessageBox.Show("File downloaded");
+
+            Thread set_lb = new Thread(new ThreadStart(setLbAfterDownload));
+            set_lb.Start();
+            
+        }
+
+        private void setLbAfterDownload()
+        {
+            download_status_lb.Text = "File downloaded";
+            Thread.Sleep(3000);
+            download_status_lb.Text = "";
         }
 
         private void wc_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
