@@ -44,7 +44,7 @@ namespace github_management
         {
             if (show_login_on_show)
             {
-                LogIn(null, null);
+                ShowLogInForm(null, null);
             }
         }
 
@@ -231,7 +231,7 @@ namespace github_management
         #region LOG_IN_LOG_OUT
 
         // log in, open form
-        private void LogIn(object sender, EventArgs e)
+        private void ShowLogInForm(object sender, EventArgs e)
         {
             LogIn form = new LogIn(this);
             this.Hide();
@@ -269,7 +269,7 @@ namespace github_management
             // add log in item
             ToolStripItem log_in_item = new ToolStripMenuItem();
             log_in_item.Text = "Log In";
-            log_in_item.Click += new EventHandler(LogIn);
+            log_in_item.Click += new EventHandler(ShowLogInForm);
             menu_strip.Items.Add(log_in_item);
 
             key.Close();

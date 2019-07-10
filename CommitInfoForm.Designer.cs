@@ -36,6 +36,9 @@
             this.save_file_dialog = new System.Windows.Forms.FolderBrowserDialog();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.download_status_lb = new System.Windows.Forms.ToolStripStatusLabel();
+            this.download_all_files = new System.Windows.Forms.Button();
+            this.files_count = new System.Windows.Forms.Label();
+            this.update_ftp = new System.Windows.Forms.Button();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -93,7 +96,7 @@
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.download_status_lb});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 428);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 503);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(800, 22);
             this.statusStrip1.TabIndex = 5;
@@ -105,12 +108,45 @@
             this.download_status_lb.Name = "download_status_lb";
             this.download_status_lb.Size = new System.Drawing.Size(0, 17);
             // 
+            // download_all_files
+            // 
+            this.download_all_files.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.download_all_files.Location = new System.Drawing.Point(16, 467);
+            this.download_all_files.Name = "download_all_files";
+            this.download_all_files.Size = new System.Drawing.Size(158, 23);
+            this.download_all_files.TabIndex = 9;
+            this.download_all_files.Text = "Download files to TEMP";
+            this.download_all_files.UseVisualStyleBackColor = true;
+            this.download_all_files.Click += new System.EventHandler(this.Download_all_files_Click);
+            // 
+            // files_count
+            // 
+            this.files_count.AutoSize = true;
+            this.files_count.Location = new System.Drawing.Point(13, 441);
+            this.files_count.Name = "files_count";
+            this.files_count.Size = new System.Drawing.Size(35, 13);
+            this.files_count.TabIndex = 10;
+            this.files_count.Text = "label2";
+            // 
+            // update_ftp
+            // 
+            this.update_ftp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.update_ftp.Location = new System.Drawing.Point(180, 467);
+            this.update_ftp.Name = "update_ftp";
+            this.update_ftp.Size = new System.Drawing.Size(158, 23);
+            this.update_ftp.TabIndex = 11;
+            this.update_ftp.Text = "Update through FTP";
+            this.update_ftp.UseVisualStyleBackColor = true;
+            // 
             // CommitInfoForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(800, 525);
+            this.Controls.Add(this.update_ftp);
+            this.Controls.Add(this.files_count);
+            this.Controls.Add(this.download_all_files);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.file_downloaded_progress);
             this.Controls.Add(this.commit_desc);
@@ -120,6 +156,7 @@
             this.Name = "CommitInfoForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Commit Information";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.CommitInfoForm_FormClosed);
             this.Load += new System.EventHandler(this.CommitInfoForm_Load);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
@@ -138,5 +175,8 @@
         private System.Windows.Forms.FolderBrowserDialog save_file_dialog;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel download_status_lb;
+        public System.Windows.Forms.Button download_all_files;
+        private System.Windows.Forms.Label files_count;
+        public System.Windows.Forms.Button update_ftp;
     }
 }
