@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.commit_message = new System.Windows.Forms.Label();
+            this.commit_sha = new System.Windows.Forms.Label();
             this.files_panel = new System.Windows.Forms.FlowLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.commit_desc = new System.Windows.Forms.TextBox();
@@ -42,15 +42,15 @@
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // commit_message
+            // commit_sha
             // 
-            this.commit_message.AutoSize = true;
-            this.commit_message.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.commit_message.Location = new System.Drawing.Point(12, 9);
-            this.commit_message.Name = "commit_message";
-            this.commit_message.Size = new System.Drawing.Size(109, 24);
-            this.commit_message.TabIndex = 0;
-            this.commit_message.Text = "Commit Info";
+            this.commit_sha.AutoSize = true;
+            this.commit_sha.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.commit_sha.Location = new System.Drawing.Point(12, 9);
+            this.commit_sha.Name = "commit_sha";
+            this.commit_sha.Size = new System.Drawing.Size(109, 24);
+            this.commit_sha.TabIndex = 0;
+            this.commit_sha.Text = "Commit Info";
             // 
             // files_panel
             // 
@@ -137,6 +137,7 @@
             this.update_ftp.TabIndex = 11;
             this.update_ftp.Text = "Update through FTP";
             this.update_ftp.UseVisualStyleBackColor = true;
+            this.update_ftp.Click += new System.EventHandler(this.Update_ftp_Click);
             // 
             // CommitInfoForm
             // 
@@ -152,7 +153,7 @@
             this.Controls.Add(this.commit_desc);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.files_panel);
-            this.Controls.Add(this.commit_message);
+            this.Controls.Add(this.commit_sha);
             this.Name = "CommitInfoForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Commit Information";
@@ -167,7 +168,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Label commit_message;
+        private System.Windows.Forms.Label commit_sha;
         private System.Windows.Forms.FlowLayoutPanel files_panel;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox commit_desc;

@@ -49,6 +49,8 @@ namespace github_management
                 commit_desc.Hide();
             }
 
+            commit_sha.Text = Commit.Sha;
+
             // set files to files from this commit
             Files = Commit.Files;
 
@@ -128,17 +130,57 @@ namespace github_management
 
         private void DownloadFile(GitHubCommitFile file, string save_to)
         {
+            // create all folders in this file names path
+            string[] folders = file.Filename.Split('/');
+            string root = save_to;
+            for (int i = 0; i < folders.Length - 1; i++)
+            {
+                if (!Directory.Exists(root + folders[i]))
+                {
+                    Directory.CreateDirectory(root + folders[i]);
+                }
+                root += "/" + folders[i] + "/";
+            }
+
+            // download
             using (WebClient wc = new WebClient())
             {
-                wc.Headers.Add("user-agent", "personal-gh-management-app");
+                wc.Headers.Add("user-agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/535.2 (KHTML, like Gecko) Chrome/15.0.874.121 Safari/535.2");
+                wc.Headers.Add("keep-alive", "timeout=5");
                 wc.DownloadProgressChanged += wc_DownloadProgressChanged;
                 wc.DownloadFileCompleted += wc_DownloadFileCompleted;
 
-                wc.DownloadFileAsync(
-                    new Uri(file.RawUrl),
-                    save_to + file.Filename.Substring(file.Filename.LastIndexOf('/'))
-                );
+                string path = save_to + file.Filename;
+
+                //wc.DownloadFile(file.RawUrl, path);
+
+                wc.DownloadFileAsync(new Uri(file.RawUrl), path);
             }
+        }
+
+        private void DownloadAll()
+        {
+            // remove temp folder for this commit if any
+            RemoveTemp();
+
+            // create new folder
+            string dir_path = Path.GetTempPath() + Commit.Sha;
+            Directory.CreateDirectory(dir_path);
+
+            // for each file in files
+            for (int i = 0; i < Files.Count; i++)
+            {
+                // get file
+                GitHubCommitFile file = Files[i];
+
+                // construct path to this commit
+                string path = dir_path + "/";
+
+                // download to commit folder
+                DownloadFile(file, path);
+            }
+
+            MessageBox.Show("All files should be downloaded or are in queue to be downloaded");
         }
 
         private void wc_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
@@ -173,27 +215,7 @@ namespace github_management
 
         private void Download_all_files_Click(object sender, EventArgs e)
         {
-            // remove temp folder for this commit if any
-            RemoveTemp();
-
-            // create new folder
-            string dir_path = Path.GetTempPath() + Commit.Sha;
-            Directory.CreateDirectory(dir_path);
-
-            // for each file in files
-            for (int i = 0; i < Files.Count; i++)
-            {
-                // get file
-                GitHubCommitFile file = Files[i];
-
-                // construct path to this commit
-                string path = dir_path + "/";
-
-                // download to commit folder
-                DownloadFile(file, path);
-            }
-
-            MessageBox.Show("All files should be downloaded or are in queue to be downloaded");
+            DownloadAll();
         }
 
         private void CommitInfoForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -210,6 +232,20 @@ namespace github_management
             {
                 Directory.Delete(dir_path, true);
             }
+        }
+
+        private void Update_ftp_Click(object sender, EventArgs e)
+        {
+            // download all files from this commit to TEMP
+            DownloadAll();
+
+            // create ftp client
+            FTPClient ftp = new FTPClient("1.1.1.1", "username", "password");
+
+            // update files
+            ftp.UpdateFiles(Commit, new DirectoryInfo(Path.GetTempPath() + Commit.Sha));
+
+            MessageBox.Show("Done");
         }
     }
 }

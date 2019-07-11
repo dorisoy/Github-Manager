@@ -392,13 +392,23 @@ namespace github_management
                 List<Repository> results = new List<Repository>();
                 foreach(Repository repo in repositories)
                 {
-                    if (repo.FullName.Contains(search_tb.Text.Trim()))
+                    if (repo.FullName.Trim().ToLower().Contains(search_tb.Text.Trim().ToLower()))
                     {
                         results.Add(repo);
                     }
                 }
 
-                PopulateReposPanel(results);
+                if(results.Count > 0)
+                {
+                    PopulateReposPanel(results);
+                }
+                else
+                {
+                    repos_panel.Controls.Clear();
+                    System.Windows.Forms.Label lb = new System.Windows.Forms.Label();
+                    lb.Text = "No results";
+                    repos_panel.Controls.Add(lb);
+                }
             }
         }
     }
