@@ -147,7 +147,7 @@ namespace github_management
             {
                 wc.Headers.Add("user-agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/535.2 (KHTML, like Gecko) Chrome/15.0.874.121 Safari/535.2");
                 wc.Headers.Add("keep-alive", "timeout=5");
-                wc.Headers.Add(HttpRequestHeader.Authorization, "token=d6253481d3615b49d6a31badc75f802c7b322c09");
+                wc.Headers.Add(HttpRequestHeader.Authorization, "token="); // oAuth token goes here
                 wc.DownloadProgressChanged += wc_DownloadProgressChanged;
                 wc.DownloadFileCompleted += wc_DownloadFileCompleted;
 
