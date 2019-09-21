@@ -34,14 +34,18 @@
             this.repo_count_lb = new System.Windows.Forms.Label();
             this.repo_desc = new System.Windows.Forms.Label();
             this.menu_strip = new System.Windows.Forms.MenuStrip();
+            this.pathsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.changeBashPathToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.changeWorkingDirToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showInfoToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.window_panel = new System.Windows.Forms.Panel();
             this.search_tb = new System.Windows.Forms.TextBox();
             this.main_view = new System.Windows.Forms.Panel();
+            this.open_terminal = new System.Windows.Forms.Button();
             this.commits_panel = new System.Windows.Forms.FlowLayoutPanel();
             this.repo_name = new System.Windows.Forms.LinkLabel();
             this.clone_url_tb = new System.Windows.Forms.TextBox();
             this.copy_clone_url = new System.Windows.Forms.Button();
-            this.open_terminal = new System.Windows.Forms.Button();
             this.loading_panel = new System.Windows.Forms.Panel();
             this.loading_lb = new System.Windows.Forms.Label();
             this.changeBashPathDialog = new System.Windows.Forms.OpenFileDialog();
@@ -49,10 +53,6 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.general_progress_bar = new System.Windows.Forms.ToolStripProgressBar();
-            this.pathsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.changeBashPathToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.changeWorkingDirToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.showInfoToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.menu_strip.SuspendLayout();
             this.window_panel.SuspendLayout();
             this.main_view.SuspendLayout();
@@ -119,6 +119,37 @@
             this.menu_strip.TabIndex = 6;
             this.menu_strip.Text = "menuStrip1";
             // 
+            // pathsToolStripMenuItem
+            // 
+            this.pathsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.changeBashPathToolStripMenuItem1,
+            this.changeWorkingDirToolStripMenuItem,
+            this.showInfoToolStripMenuItem1});
+            this.pathsToolStripMenuItem.Name = "pathsToolStripMenuItem";
+            this.pathsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
+            this.pathsToolStripMenuItem.Text = "Paths";
+            // 
+            // changeBashPathToolStripMenuItem1
+            // 
+            this.changeBashPathToolStripMenuItem1.Name = "changeBashPathToolStripMenuItem1";
+            this.changeBashPathToolStripMenuItem1.Size = new System.Drawing.Size(178, 22);
+            this.changeBashPathToolStripMenuItem1.Text = "Change bash path";
+            this.changeBashPathToolStripMenuItem1.Click += new System.EventHandler(this.ChangeBashPathToolStripMenuItem_Click);
+            // 
+            // changeWorkingDirToolStripMenuItem
+            // 
+            this.changeWorkingDirToolStripMenuItem.Name = "changeWorkingDirToolStripMenuItem";
+            this.changeWorkingDirToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
+            this.changeWorkingDirToolStripMenuItem.Text = "Change working dir";
+            this.changeWorkingDirToolStripMenuItem.Click += new System.EventHandler(this.ChangeWorkingDirectoryToolStripMenuItem_Click);
+            // 
+            // showInfoToolStripMenuItem1
+            // 
+            this.showInfoToolStripMenuItem1.Name = "showInfoToolStripMenuItem1";
+            this.showInfoToolStripMenuItem1.Size = new System.Drawing.Size(178, 22);
+            this.showInfoToolStripMenuItem1.Text = "Show info";
+            this.showInfoToolStripMenuItem1.Click += new System.EventHandler(this.ShowInfoToolStripMenuItem_Click);
+            // 
             // window_panel
             // 
             this.window_panel.Controls.Add(this.search_tb);
@@ -142,17 +173,29 @@
             // 
             // main_view
             // 
+            this.main_view.Controls.Add(this.open_terminal);
             this.main_view.Controls.Add(this.repo_desc);
             this.main_view.Controls.Add(this.commits_panel);
             this.main_view.Controls.Add(this.repo_name);
             this.main_view.Controls.Add(this.clone_url_tb);
             this.main_view.Controls.Add(this.copy_clone_url);
-            this.main_view.Controls.Add(this.open_terminal);
             this.main_view.Location = new System.Drawing.Point(229, 14);
             this.main_view.Name = "main_view";
             this.main_view.Size = new System.Drawing.Size(544, 437);
             this.main_view.TabIndex = 13;
             this.main_view.Visible = false;
+            // 
+            // open_terminal
+            // 
+            this.open_terminal.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.open_terminal.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.open_terminal.Location = new System.Drawing.Point(22, 68);
+            this.open_terminal.Name = "open_terminal";
+            this.open_terminal.Size = new System.Drawing.Size(110, 23);
+            this.open_terminal.TabIndex = 9;
+            this.open_terminal.Text = "Open terminal";
+            this.open_terminal.UseVisualStyleBackColor = true;
+            this.open_terminal.Click += new System.EventHandler(this.Open_terminal_Click);
             // 
             // commits_panel
             // 
@@ -161,7 +204,7 @@
             this.commits_panel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.commits_panel.Location = new System.Drawing.Point(22, 97);
             this.commits_panel.Name = "commits_panel";
-            this.commits_panel.Size = new System.Drawing.Size(480, 308);
+            this.commits_panel.Size = new System.Drawing.Size(497, 316);
             this.commits_panel.TabIndex = 9;
             this.commits_panel.WrapContents = false;
             // 
@@ -188,24 +231,13 @@
             // copy_clone_url
             // 
             this.copy_clone_url.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.copy_clone_url.Location = new System.Drawing.Point(441, 411);
+            this.copy_clone_url.Location = new System.Drawing.Point(138, 68);
             this.copy_clone_url.Name = "copy_clone_url";
             this.copy_clone_url.Size = new System.Drawing.Size(94, 23);
             this.copy_clone_url.TabIndex = 8;
-            this.copy_clone_url.Text = "Get clone URL";
+            this.copy_clone_url.Text = "Copy URL";
             this.copy_clone_url.UseVisualStyleBackColor = true;
             this.copy_clone_url.Click += new System.EventHandler(this.Copy_Clone_Url_Click);
-            // 
-            // open_terminal
-            // 
-            this.open_terminal.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.open_terminal.Location = new System.Drawing.Point(341, 411);
-            this.open_terminal.Name = "open_terminal";
-            this.open_terminal.Size = new System.Drawing.Size(94, 23);
-            this.open_terminal.TabIndex = 9;
-            this.open_terminal.Text = "Open terminal";
-            this.open_terminal.UseVisualStyleBackColor = true;
-            this.open_terminal.Click += new System.EventHandler(this.Open_terminal_Click);
             // 
             // loading_panel
             // 
@@ -228,7 +260,6 @@
             // 
             // changeBashPathDialog
             // 
-            this.changeBashPathDialog.FileName = "openFileDialog1";
             this.changeBashPathDialog.Filter = "Git Bash Exe|bash.exe";
             // 
             // statusStrip1
@@ -253,37 +284,6 @@
             // 
             this.general_progress_bar.Name = "general_progress_bar";
             this.general_progress_bar.Size = new System.Drawing.Size(100, 16);
-            // 
-            // pathsToolStripMenuItem
-            // 
-            this.pathsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.changeBashPathToolStripMenuItem1,
-            this.changeWorkingDirToolStripMenuItem,
-            this.showInfoToolStripMenuItem1});
-            this.pathsToolStripMenuItem.Name = "pathsToolStripMenuItem";
-            this.pathsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
-            this.pathsToolStripMenuItem.Text = "Paths";
-            // 
-            // changeBashPathToolStripMenuItem1
-            // 
-            this.changeBashPathToolStripMenuItem1.Name = "changeBashPathToolStripMenuItem1";
-            this.changeBashPathToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
-            this.changeBashPathToolStripMenuItem1.Text = "Change bash path";
-            this.changeBashPathToolStripMenuItem1.Click += new System.EventHandler(this.ChangeBashPathToolStripMenuItem_Click);
-            // 
-            // changeWorkingDirToolStripMenuItem
-            // 
-            this.changeWorkingDirToolStripMenuItem.Name = "changeWorkingDirToolStripMenuItem";
-            this.changeWorkingDirToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.changeWorkingDirToolStripMenuItem.Text = "Change working dir";
-            this.changeWorkingDirToolStripMenuItem.Click += new System.EventHandler(this.ChangeWorkingDirectoryToolStripMenuItem_Click);
-            // 
-            // showInfoToolStripMenuItem1
-            // 
-            this.showInfoToolStripMenuItem1.Name = "showInfoToolStripMenuItem1";
-            this.showInfoToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
-            this.showInfoToolStripMenuItem1.Text = "Show info";
-            this.showInfoToolStripMenuItem1.Click += new System.EventHandler(this.ShowInfoToolStripMenuItem_Click);
             // 
             // Main
             // 

@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using System.Threading;
 using System.IO;
+using System.Net;
 
 namespace github_management
 {
@@ -51,6 +52,15 @@ namespace github_management
         private void Main_Load(object sender, EventArgs e)
         {
             this.Icon = new Icon(@"GitHub-Mark/github_mark_120px_plus_Bzz_icon.ico");
+
+            open_terminal.Image = Image.FromFile(@"Images/terminal.png");
+            open_terminal.ImageAlign = ContentAlignment.MiddleLeft;
+            open_terminal.TextAlign = ContentAlignment.MiddleRight;
+
+            copy_clone_url.Image = Image.FromFile(@"Images/copy.png");
+            copy_clone_url.ImageAlign = ContentAlignment.MiddleLeft;
+            copy_clone_url.TextAlign = ContentAlignment.MiddleRight;
+
             LoadClient();
         }
 
@@ -86,7 +96,8 @@ namespace github_management
                     empty_lb.Hide();
 
                     client = new GitHubClient(new ProductHeaderValue("personal-gh-management-app"));
-                    var basicAuth = new Credentials(key.GetValue("username").ToString(), key.GetValue("password").ToString());
+                    //Credentials basicAuth = new Credentials(key.GetValue("username").ToString(), key.GetValue("password").ToString());
+                    Credentials basicAuth = new Credentials("d6253481d3615b49d6a31badc75f802c7b322c09", AuthenticationType.Oauth);
                     client.Credentials = basicAuth;
 
                     for(int i = 0; i < menu_strip.Items.Count; i++)
@@ -338,7 +349,7 @@ namespace github_management
         {
             changeBashPathDialog.ShowDialog();
 
-            if(changeBashPathDialog.FileName != null && changeBashPathDialog.FileName.Trim() != "")
+            if(changeBashPathDialog.FileName != null && changeBashPathDialog.FileName.Trim() != "" && changeBashPathDialog.FileName != "openFileDialog1")
             {
                 RegistryKey key = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\GithubManager", true);
 

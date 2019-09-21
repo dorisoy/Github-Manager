@@ -147,24 +147,31 @@ namespace github_management
             {
                 wc.Headers.Add("user-agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/535.2 (KHTML, like Gecko) Chrome/15.0.874.121 Safari/535.2");
                 wc.Headers.Add("keep-alive", "timeout=5");
+                wc.Headers.Add(HttpRequestHeader.Authorization, "token=d6253481d3615b49d6a31badc75f802c7b322c09");
                 wc.DownloadProgressChanged += wc_DownloadProgressChanged;
                 wc.DownloadFileCompleted += wc_DownloadFileCompleted;
 
                 string path = save_to + file.Filename;
 
-                //wc.DownloadFile(file.RawUrl, path);
-
                 wc.DownloadFileAsync(new Uri(file.RawUrl), path);
             }
         }
 
-        private void DownloadAll()
+        private void DownloadAll(string alt_folder = "")
         {
             // remove temp folder for this commit if any
             RemoveTemp();
 
             // create new folder
-            string dir_path = Path.GetTempPath() + Commit.Sha;
+            string dir_path;
+            if (alt_folder.Trim() == "")
+            {
+                dir_path = Path.GetTempPath() + Commit.Sha;
+            }
+            else
+            {
+                dir_path = alt_folder + "/Commit-" + Commit.Sha;
+            }
             Directory.CreateDirectory(dir_path);
 
             // for each file in files
@@ -215,7 +222,12 @@ namespace github_management
 
         private void Download_all_files_Click(object sender, EventArgs e)
         {
-            DownloadAll();
+            save_all_folder_dialog.ShowDialog();
+
+            if (save_all_folder_dialog.SelectedPath != null && save_all_folder_dialog.SelectedPath.Trim() != "")
+            {
+                DownloadAll(save_all_folder_dialog.SelectedPath);
+            }
         }
 
         private void CommitInfoForm_FormClosed(object sender, FormClosedEventArgs e)

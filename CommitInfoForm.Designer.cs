@@ -39,6 +39,7 @@
             this.download_all_files = new System.Windows.Forms.Button();
             this.files_count = new System.Windows.Forms.Label();
             this.update_ftp = new System.Windows.Forms.Button();
+            this.save_all_folder_dialog = new System.Windows.Forms.FolderBrowserDialog();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -115,7 +116,7 @@
             this.download_all_files.Name = "download_all_files";
             this.download_all_files.Size = new System.Drawing.Size(158, 23);
             this.download_all_files.TabIndex = 9;
-            this.download_all_files.Text = "Download files to TEMP";
+            this.download_all_files.Text = "Download files";
             this.download_all_files.UseVisualStyleBackColor = true;
             this.download_all_files.Click += new System.EventHandler(this.Download_all_files_Click);
             // 
@@ -179,5 +180,6 @@
         public System.Windows.Forms.Button download_all_files;
         private System.Windows.Forms.Label files_count;
         public System.Windows.Forms.Button update_ftp;
+        private System.Windows.Forms.FolderBrowserDialog save_all_folder_dialog;
     }
 }
